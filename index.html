@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EFN</title>
+    <title>EFN - Auto</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -18,68 +18,61 @@
         }
         .card {
             background: white;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
+        #status { 
+            font-family: monospace; 
+            font-size: 1.5rem; 
+            color: #007bff; 
         }
-        button:hover { background-color: #0056b3; }
-        #status { margin-top: 1rem; font-weight: bold; color: #d9534f; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <h2>Window Manager</h2>
-        <p>Press start to begin the 10-second sequence.</p>
-        <button id="startBtn">Start Sequence</button>
-        <div id="status"></div>
+        <h2>Sequence Active</h2>
+        <div id="status">10.000s</div>
     </div>
 
     <script>
-        const btn = document.getElementById('startBtn');
-        const status = document.getElementById('status');
+        window.onload = () => {
+            const status = document.getElementById('status');
+            const duration = 1000; // 10 seconds in ms
+            const startTime = performance.now();
 
-        btn.addEventListener('click', () => {
-            btn.disabled = true;
-            let seconds = 10;
-            
-            const timer = setInterval(() => {
-                status.innerText = `Opening clone in ${seconds}s...`;
-                seconds--;
-                
-                if (seconds < 0) {
-                    clearInterval(timer);
+            function update() {
+                const currentTime = performance.now();
+                const elapsed = currentTime - startTime;
+                const remaining = Math.max(0, duration - elapsed);
+
+                // Format to 3 decimal places for millisecond precision
+                status.innerText = (remaining / 1000).toFixed(3) + "s";
+
+                if (remaining > 0) {
+                    requestAnimationFrame(update);
+                } else {
                     openClone();
                     status.innerText = "Window triggered.";
                 }
-            }, 1000);
-        });
+            }
+
+            requestAnimationFrame(update);
+        };
 
         function openClone() {
-            // Calculate 1/7th of the screen area (approx 37% of width/height)
             const width = Math.round(window.screen.width * 0.37);
             const height = Math.round(window.screen.height * 0.37);
-            
-            // Center the new window
             const left = (window.screen.width / 2) - (width / 2);
             const top = (window.screen.height / 2) - (height / 2);
 
             const features = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`;
             
-            // Opens the current URL in a new window
-            window.open('https://sumeguyontheinternet.github.io/virus213123/index.html', '_blank');
+            // Note: Passed 'features' into the third argument
+            window.open('https://sumeguyontheinternet.github.io/virus213123/index.html', '_blank', features);
         }
     </script>
 </body>
 </html>
-
