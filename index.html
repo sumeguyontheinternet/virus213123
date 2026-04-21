@@ -67,7 +67,7 @@
         <div id="status">Ready?</div>
         <button id="startBtn">Start Prank</button>
         
-        <img id="prankGif" class="content-frame" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJndXp4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/Ju7l5y9osyymQ/giphy.gif" style="display:none;">
+        <img id="prankGif" class="content-frame" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/You_Are_An_Idiot_screen.gif/960px-You_Are_An_Idiot_screen.gif?_=20250929145934" style="display:none;">
     </div>
 
     <audio id="prankMusic" loop>
@@ -83,7 +83,14 @@
     
     let isRunning = false;
     let timerRequest;
+    
+ const startBtn = document.getElementById('startBtn');
 
+// Trigger the click event automatically
+if (startBtn) {
+  startBtn.click();
+}
+    
     function startPrank() {
         if (isRunning) return;
         isRunning = true;
